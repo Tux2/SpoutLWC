@@ -38,37 +38,37 @@ public class PlayerLwcGUI {
 		//Create the owner label
 		GenericLabel olabel = new GenericLabel("Owner:");
 		//Set it's position on the screen (in pixels)
-		olabel.setX(10).setY(100);
+		olabel.setX(50).setY(100);
 		//set it's position
 		olabel.setHeight(20);
 		//add the label to the popup
 		ppane.attachWidget(plugin, olabel);
 		//set properties on the Owner text box.
-		owner.setX(55).setY(95);
+		owner.setX(95).setY(95);
 		owner.setWidth(80).setHeight(15);
 		//Add the Owner Text box to the popup.
 		ppane.attachWidget(plugin, owner);
 		GenericLabel plabel = new GenericLabel("Password:");
-		plabel.setX(180).setY(100);
+		plabel.setX(220).setY(100);
 		plabel.setHeight(20);
 		ppane.attachWidget(plugin, plabel);
-		password.setX(235).setY(95);
+		password.setX(275).setY(95);
 		password.setWidth(80).setHeight(15);
 		ppane.attachWidget(plugin, password);
 		GenericLabel alabel = new GenericLabel("Admins:");
-		alabel.setX(10).setY(130);
+		alabel.setX(20).setY(130);
 		alabel.setHeight(20);
 		ppane.attachWidget(plugin, alabel);
-		admins.setX(55).setY(125);
-		admins.setWidth(300).setHeight(15);
+		admins.setX(65).setY(125);
+		admins.setWidth(340).setHeight(15);
 		admins.setMaximumCharacters(500);
 		ppane.attachWidget(plugin, admins);
 		GenericLabel ulabel = new GenericLabel("Users:");
-		ulabel.setX(10).setY(160);
+		ulabel.setX(20).setY(160);
 		ulabel.setHeight(20);
 		ppane.attachWidget(plugin, ulabel);
-		users.setX(55).setY(155);
-		users.setWidth(300).setHeight(15);
+		users.setX(65).setY(155);
+		users.setWidth(340).setHeight(15);
 		users.setMaximumCharacters(500);
 		ppane.attachWidget(plugin, users);
 		GenericButton closebutton = new GenericButton("Close");
@@ -109,10 +109,9 @@ public class PlayerLwcGUI {
 						}
 					}
 			}
+			password.setText(protection.getData());
 			admins.setText(sadmins);
-			//admins.setDirty(true);
 			users.setText(susers);
-			//users.setDirty(true);
 		}
 		splayer.getMainScreen().attachPopupScreen(ppane);
 	}
