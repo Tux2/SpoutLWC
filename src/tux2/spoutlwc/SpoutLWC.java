@@ -1,6 +1,8 @@
 package tux2.spoutlwc;
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Priority;
 import org.bukkit.event.Event.Type;
@@ -8,7 +10,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.griefcraft.lwc.*;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
@@ -18,52 +22,59 @@ import com.nijikokun.bukkit.Permissions.Permissions;
  * @author tux2
  */
 public class SpoutLWC extends JavaPlugin {
-    private final HashMap<Player, Boolean> debugees = new HashMap<Player, Boolean>();
 	private static PermissionHandler Permissions;
+	
+	LWC lwc = null;
+    public HashSet<Byte> transparentBlocks = new HashSet<Byte>();
+    
+    ConcurrentHashMap<SpoutPlayer, PlayerLwcGUI> guiscreens = new ConcurrentHashMap<SpoutPlayer, PlayerLwcGUI>();
 
     public SpoutLWC() {
         super();
-        // TODO: Place any custom initialisation code here
-
-        // NOTE: Event registration should be done in onEnable not here as all events are unregistered when a plugin is disabled
+        
+        //Setting transparent blocks.
+        transparentBlocks.add((byte) 0); // Air
+        transparentBlocks.add((byte) 8); // Water
+        transparentBlocks.add((byte) 9); // Stationary Water
+        transparentBlocks.add((byte) 20); // Glass
+        transparentBlocks.add((byte) 30); // Cobweb
+        transparentBlocks.add((byte) 65); // Ladder
+        transparentBlocks.add((byte) 66); // Rail
+        transparentBlocks.add((byte) 78); // Snow
+        transparentBlocks.add((byte) 83); // Sugar Cane
+        transparentBlocks.add((byte) 101); // Iron Bars
+        transparentBlocks.add((byte) 102); // Glass Pane
+        transparentBlocks.add((byte) 106); // Vines
     }
 
    
 
     public void onEnable() {
     	setupPermissions();
-        // TODO: Place any custom enable code here including the registration of any events
+    	Plugin lwcPlugin = getServer().getPluginManager().getPlugin("LWC");
+    	if(lwcPlugin != null) {
+    	    lwc = ((LWCPlugin) lwcPlugin).getLWC();
 
-        // Register our events
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Type.CUSTOM_EVENT, new LWCScreenListener(this), Priority.Normal, this);
-       
+            // Register our events
+            PluginManager pm = getServer().getPluginManager();
+            pm.registerEvent(Type.CUSTOM_EVENT, new LWCScreenListener(this), Priority.Normal, this);
+            pm.registerEvent(Type.CUSTOM_EVENT, new LWCInputListener(this), Priority.Normal, this);
+           
 
-        // EXAMPLE: Custom code, here we just output some info so we can check all is well
-        PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+            // EXAMPLE: Custom code, here we just output some info so we can check all is well
+            PluginDescriptionFile pdfFile = this.getDescription();
+            System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!" );
+    	}else {
+    		System.out.println("[SpoutLWC] Lightweight chest not found! This plugin will not work!");
+    	}
     }
+    
     public void onDisable() {
-        // TODO: Place any custom disable code here
-
         // NOTE: All registered events are automatically unregistered when a plugin is disabled
 
         // EXAMPLE: Custom code, here we just output some info so we can check all is well
         System.out.println("Goodbye world!");
     }
-    public boolean isDebugging(final Player player) {
-        if (debugees.containsKey(player)) {
-            return debugees.get(player);
-        } else {
-            return false;
-        }
-    }
-
-    public void setDebugging(final Player player, final boolean value) {
-        debugees.put(player, value);
-    }
-
-
 
 	public boolean hasPermissions(Player player, String node) {
 	    if (Permissions != null) {
@@ -72,9 +83,7 @@ public class SpoutLWC extends JavaPlugin {
 	        return player.hasPermission(node);
 	    }
 	}
-
-
-
+	
 	private void setupPermissions() {
 	    Plugin permissions = this.getServer().getPluginManager().getPlugin("Permissions");
 	
