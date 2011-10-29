@@ -22,7 +22,7 @@ public class LWCScreenListener extends ScreenListener {
 			SpoutPlayer player = event.getPlayer();
 			if (completebutton.equalsIgnoreCase("close")) {
 				player.closeActiveWindow();
-			} else {
+			} /*else {
 
 				if (plugin.hasPermissions(player, "spoutlwc.use")) {
 					
@@ -30,7 +30,7 @@ public class LWCScreenListener extends ScreenListener {
 					
 					player.closeActiveWindow();
 				}
-			}
+			}*/
 		}
 	}
 

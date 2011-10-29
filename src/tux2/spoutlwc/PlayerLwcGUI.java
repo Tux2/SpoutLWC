@@ -3,16 +3,23 @@ package tux2.spoutlwc;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.gui.Color;
+import org.getspout.spoutapi.gui.Container;
+import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericButton;
+import org.getspout.spoutapi.gui.GenericContainer;
+import org.getspout.spoutapi.gui.GenericItemWidget;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.gui.GenericRadioButton;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.griefcraft.model.AccessRight;
 import com.griefcraft.model.Protection;
+import com.griefcraft.model.ProtectionTypes;
 
 public class PlayerLwcGUI {
 	
@@ -21,6 +28,9 @@ public class PlayerLwcGUI {
 	GenericTextField admins = new GenericTextField();
 	GenericTextField users = new GenericTextField();
 	GenericTextField password = new GenericTextField();
+	GenericRadioButton lwpassword = new GenericRadioButton("Password Lock");
+	GenericRadioButton lwprivate = new GenericRadioButton("Private Lock");
+	GenericRadioButton lwpublic = new GenericRadioButton("Public Lock");
 	
 	public PlayerLwcGUI(SpoutLWC plugin, Protection protection, SpoutPlayer splayer) {
 		this(plugin, protection, splayer, protection.getBlock());
@@ -34,7 +44,18 @@ public class PlayerLwcGUI {
 		label.setTextColor(new Color(0, 200, 0)); //This makes the label green.
 		label.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER); //This puts the label at top center and align the text correctly.
 		label.shiftYPos(5);
+		splayer.getClipboardText();
 		ppane.attachWidget(plugin, label);
+		
+		int y = 50, height = 15;
+		int x = 170;
+		GenericItemWidget chesticon = new GenericItemWidget(new ItemStack(95));
+		chesticon.setX(x + 2 * height).setY(y);
+		chesticon.setHeight(height * 2).setWidth(height * 2)
+				.setDepth(height * 2);
+		chesticon.setTooltip("Lock that chest!");
+		ppane.attachWidget(plugin, chesticon);
+		
 		//Create the owner label
 		GenericLabel olabel = new GenericLabel("Owner:");
 		//Set it's position on the screen (in pixels)
@@ -55,26 +76,53 @@ public class PlayerLwcGUI {
 		password.setX(275).setY(95);
 		password.setWidth(80).setHeight(15);
 		ppane.attachWidget(plugin, password);
+		lwpassword.setX(50).setY(115);
+		lwpassword.setWidth(80).setHeight(10);
+		lwpassword.setGroup(1);
+		lwpassword.setColor(new Color(0, 200, 0));
+		ppane.attachWidget(plugin, lwpassword);
+		lwprivate.setX(180).setY(115);
+		lwprivate.setWidth(80).setHeight(10);
+		lwprivate.setGroup(1);
+		lwprivate.setColor(new Color(0, 200, 0));
+		ppane.attachWidget(plugin, lwprivate);
+		lwpublic.setX(300).setY(115);
+		lwpublic.setWidth(80).setHeight(10);
+		lwpublic.setGroup(1);
+		lwpublic.setColor(new Color(0, 200, 0));
+		ppane.attachWidget(plugin, lwpublic);
 		GenericLabel alabel = new GenericLabel("Admins:");
-		alabel.setX(20).setY(130);
+		alabel.setX(20).setY(150);
 		alabel.setHeight(20);
 		ppane.attachWidget(plugin, alabel);
-		admins.setX(65).setY(125);
+		admins.setX(65).setY(145);
 		admins.setWidth(340).setHeight(15);
 		admins.setMaximumCharacters(500);
 		ppane.attachWidget(plugin, admins);
 		GenericLabel ulabel = new GenericLabel("Users:");
-		ulabel.setX(20).setY(160);
+		ulabel.setX(20).setY(180);
 		ulabel.setHeight(20);
 		ppane.attachWidget(plugin, ulabel);
-		users.setX(65).setY(155);
+		users.setX(65).setY(175);
 		users.setWidth(340).setHeight(15);
 		users.setMaximumCharacters(500);
 		ppane.attachWidget(plugin, users);
-		GenericButton closebutton = new GenericButton("Close");
-		closebutton.setX(160).setY(210);
-		closebutton.setWidth(80).setHeight(20);
-		ppane.attachWidget(plugin, closebutton);
+		GenericButton savebutton = new GenericButton("Save");
+		GenericButton deletebutton = new GenericButton("Delete");
+		GenericButton cancelbutton = new GenericButton("Cancel");
+		//closebutton.setX(160).setY(210);
+		savebutton.setWidth(80).setHeight(20);
+		savebutton.setX(84).setY(200);
+		savebutton.setColor(new Color(0, 150, 0));
+		deletebutton.setWidth(80).setHeight(20);
+		deletebutton.setX(174).setY(200);
+		deletebutton.setColor(new Color(150, 0, 0));
+		cancelbutton.setWidth(80).setHeight(20);
+		cancelbutton.setX(264).setY(200);
+		cancelbutton.setColor(new Color(150, 160, 0));
+		ppane.attachWidget(plugin, savebutton);
+		ppane.attachWidget(plugin, deletebutton);
+		ppane.attachWidget(plugin, cancelbutton);
 		if(protection != null) {
 			owner.setText(protection.getOwner());
 			List<AccessRight> rights = protection.getAccessRights();
@@ -109,9 +157,18 @@ public class PlayerLwcGUI {
 						}
 					}
 			}
-			password.setText(protection.getData());
+			if(protection.getType() == ProtectionTypes.PASSWORD) {
+				password.setText("********");
+				lwpassword.setSelected(true);
+			}else if(protection.getType() == ProtectionTypes.PRIVATE) {
+				lwprivate.setSelected(true);
+			}else if(protection.getType() == ProtectionTypes.PUBLIC) {
+				lwpublic.setSelected(true);
+			}
 			admins.setText(sadmins);
 			users.setText(susers);
+		}else {
+			lwprivate.setSelected(true);
 		}
 		splayer.getMainScreen().attachPopupScreen(ppane);
 	}
