@@ -2,13 +2,11 @@ package tux2.spoutlwc;
 
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.gui.Color;
-import org.getspout.spoutapi.gui.Container;
-import org.getspout.spoutapi.gui.ContainerType;
 import org.getspout.spoutapi.gui.GenericButton;
-import org.getspout.spoutapi.gui.GenericContainer;
 import org.getspout.spoutapi.gui.GenericItemWidget;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
@@ -31,12 +29,16 @@ public class PlayerLwcGUI {
 	GenericRadioButton lwpassword = new GenericRadioButton("Password Lock");
 	GenericRadioButton lwprivate = new GenericRadioButton("Private Lock");
 	GenericRadioButton lwpublic = new GenericRadioButton("Public Lock");
+	Protection protection;
+	Block target;
 	
 	public PlayerLwcGUI(SpoutLWC plugin, Protection protection, SpoutPlayer splayer) {
 		this(plugin, protection, splayer, protection.getBlock());
 	}
 	
 	public PlayerLwcGUI(SpoutLWC plugin, Protection protection, SpoutPlayer splayer, Block target) {
+		this.protection = protection;
+		this.target = target;
 		//Let's create a new popup
 		GenericPopup ppane = new GenericPopup();
 		//Add the label at the top of the window
@@ -47,12 +49,14 @@ public class PlayerLwcGUI {
 		splayer.getClipboardText();
 		ppane.attachWidget(plugin, label);
 		
-		int y = 50, height = 15;
+		int y = 30, height = 15;
 		int x = 170;
-		GenericItemWidget chesticon = new GenericItemWidget(new ItemStack(95));
+		if(target.getType() == Material.CHEST || target.getType() == Material.FURNACE || target.getType() == Material.BURNING_FURNACE) {
+			y = 50;
+		}
+		GenericItemWidget chesticon = new GenericItemWidget(new ItemStack(LWCScreenListener.getDisplayItem(target.getType())));
 		chesticon.setX(x + 2 * height).setY(y);
-		chesticon.setHeight(height * 2).setWidth(height * 2)
-				.setDepth(height * 2);
+		chesticon.setHeight(height * 2).setWidth(height * 2).setDepth(30);
 		chesticon.setTooltip("Lock that chest!");
 		ppane.attachWidget(plugin, chesticon);
 		
@@ -77,17 +81,17 @@ public class PlayerLwcGUI {
 		password.setWidth(80).setHeight(15);
 		ppane.attachWidget(plugin, password);
 		lwpassword.setX(50).setY(115);
-		lwpassword.setWidth(80).setHeight(10);
+		lwpassword.setWidth(80).setHeight(20);
 		lwpassword.setGroup(1);
 		lwpassword.setColor(new Color(0, 200, 0));
 		ppane.attachWidget(plugin, lwpassword);
 		lwprivate.setX(180).setY(115);
-		lwprivate.setWidth(80).setHeight(10);
+		lwprivate.setWidth(80).setHeight(20);
 		lwprivate.setGroup(1);
 		lwprivate.setColor(new Color(0, 200, 0));
 		ppane.attachWidget(plugin, lwprivate);
 		lwpublic.setX(300).setY(115);
-		lwpublic.setWidth(80).setHeight(10);
+		lwpublic.setWidth(80).setHeight(20);
 		lwpublic.setGroup(1);
 		lwpublic.setColor(new Color(0, 200, 0));
 		ppane.attachWidget(plugin, lwpublic);
@@ -125,6 +129,9 @@ public class PlayerLwcGUI {
 		ppane.attachWidget(plugin, cancelbutton);
 		if(protection != null) {
 			owner.setText(protection.getOwner());
+			if(!protection.getOwner().equalsIgnoreCase(splayer.getName()) && !plugin.lwc.hasPermission(splayer, "lwc.admin")) {
+				owner.setEnabled(false);
+			}
 			List<AccessRight> rights = protection.getAccessRights();
 			String sadmins = "";
 			String susers = "";
@@ -143,19 +150,31 @@ public class PlayerLwcGUI {
 						susers = susers + right.getName();
 					}
 				}else if(right.getType() == AccessRight.GROUP) {
-						if(right.getRights() == AccessRight.RIGHT_ADMIN) {
-							//right.
-							if(!sadmins.equals("")) {
-								sadmins = sadmins + ", ";
-							}
-							sadmins = sadmins + "g:" + right.getName();
-						}else if(right.getRights() == AccessRight.RIGHT_PLAYER) {
-							if(!susers.equals("")) {
-								susers = susers + ", ";
-							}
-							susers = susers + "g:" + right.getName();
+					if(right.getRights() == AccessRight.RIGHT_ADMIN) {
+						if(!sadmins.equals("")) {
+							sadmins = sadmins + ", ";
 						}
+						sadmins = sadmins + "g:" + right.getName();
+					}else if(right.getRights() == AccessRight.RIGHT_PLAYER) {
+						if(!susers.equals("")) {
+							susers = susers + ", ";
+						}
+						susers = susers + "g:" + right.getName();
 					}
+				}else if(right.getType() == AccessRight.LIST) {
+					if(right.getRights() == AccessRight.RIGHT_ADMIN) {
+						//right.
+						if(!sadmins.equals("")) {
+							sadmins = sadmins + ", ";
+						}
+						sadmins = sadmins + "l:" + right.getName();
+					}else if(right.getRights() == AccessRight.RIGHT_PLAYER) {
+						if(!susers.equals("")) {
+							susers = susers + ", ";
+						}
+						susers = susers + "l:" + right.getName();
+					}
+				}
 			}
 			if(protection.getType() == ProtectionTypes.PASSWORD) {
 				password.setText("********");
@@ -167,7 +186,12 @@ public class PlayerLwcGUI {
 			}
 			admins.setText(sadmins);
 			users.setText(susers);
+			if(!plugin.lwc.hasPermission(splayer, "lwc.remove")) {
+				deletebutton.setEnabled(false);
+			}
 		}else {
+			deletebutton.setEnabled(false);
+			owner.setText(splayer.getName());
 			lwprivate.setSelected(true);
 		}
 		splayer.getMainScreen().attachPopupScreen(ppane);

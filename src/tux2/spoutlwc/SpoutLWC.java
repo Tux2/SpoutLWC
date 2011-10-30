@@ -28,6 +28,7 @@ public class SpoutLWC extends JavaPlugin {
     public HashSet<Byte> transparentBlocks = new HashSet<Byte>();
     
     ConcurrentHashMap<SpoutPlayer, PlayerLwcGUI> guiscreens = new ConcurrentHashMap<SpoutPlayer, PlayerLwcGUI>();
+    ConcurrentHashMap<SpoutPlayer, UnlockGUI> unlockscreens = new ConcurrentHashMap<SpoutPlayer, UnlockGUI>();
 
     public SpoutLWC() {
         super();
