@@ -55,11 +55,14 @@ public class SpoutLWC extends JavaPlugin {
     	Plugin lwcPlugin = getServer().getPluginManager().getPlugin("LWC");
     	if(lwcPlugin != null) {
     	    lwc = ((LWCPlugin) lwcPlugin).getLWC();
+    	    LWCScreenListener serverListener = new LWCScreenListener(this);
 
             // Register our events
             PluginManager pm = getServer().getPluginManager();
             pm.registerEvent(Type.CUSTOM_EVENT, new LWCScreenListener(this), Priority.Normal, this);
             pm.registerEvent(Type.CUSTOM_EVENT, new LWCInputListener(this), Priority.Normal, this);
+            pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
+            pm.registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
            
 
             // EXAMPLE: Custom code, here we just output some info so we can check all is well

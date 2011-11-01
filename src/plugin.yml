@@ -1,4 +1,5 @@
 name: SpoutLWC
 main: tux2.spoutlwc.SpoutLWC
-version: 0.1
-depend: [Spout, LWC]
+version: 0.2beta
+depend: [Spout]
+softdepend: [LWC]

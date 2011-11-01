@@ -35,109 +35,120 @@ public class LWCScreenListener extends ScreenListener {
 					plugin.unlockscreens.remove(player);
 				}
 			} else {
-				if (plugin.lwc.hasPermission(player, "lwc.protect")) {
-					if (completebutton.equalsIgnoreCase("save")) {
-						if(plugin.guiscreens.containsKey(player)) {
-							PlayerLwcGUI tgui = plugin.guiscreens.get(player);
-							Protection protection = plugin.lwc.findProtection(tgui.target);
-							if(protection != null) {
-								if(plugin.lwc.canAdminProtection(player, protection)) {
-									if(tgui.lwpassword.isSelected()) {
-										if(tgui.password.getText().equals("********") || tgui.password.getText().equals("")) {
-											player.sendNotification("Invalid Password", "Please input a password!", Material.FIRE);
-											return;
+				if(plugin.lwc != null) {
+					if (plugin.lwc.hasPermission(player, "lwc.protect")) {
+						if (completebutton.equalsIgnoreCase("save")) {
+							if(plugin.guiscreens.containsKey(player)) {
+								PlayerLwcGUI tgui = plugin.guiscreens.get(player);
+								Protection protection = plugin.lwc.findProtection(tgui.target);
+								if(protection != null) {
+									if(plugin.lwc.canAdminProtection(player, protection)) {
+										if(tgui.lwpassword.isSelected()) {
+											if(tgui.password.getText().equals("********") || tgui.password.getText().equals("")) {
+												player.sendNotification("Invalid Password", "Please input a password!", Material.FIRE);
+												return;
+											}
 										}
-									}
-									protection.remove();
-									if(createProtection(tgui, player)) {
-										player.sendNotification("Protection Updated!", "It is now secure.", getDisplayItem(tgui.target.getType()));
+										protection.remove();
+										if(createProtection(tgui, player)) {
+											player.sendNotification("Protection Updated!", "It is now secure.", getDisplayItem(tgui.target.getType()));
+										}else {
+											player.sendNotification("Error!", "Unable to lock " + tgui.target.getType().toString() + ".", Material.FIRE);
+										}
 									}else {
-										player.sendNotification("Error!", "Unable to lock " + tgui.target.getType().toString() + ".", Material.FIRE);
+										player.sendNotification("Unauthorized!", "Unable to lock " + tgui.target.getType().toString() + ".", Material.FIRE);
 									}
 								}else {
-									player.sendNotification("Unauthorized!", "Unable to lock " + tgui.target.getType().toString() + ".", Material.FIRE);
+									if(createProtection(tgui, player)) {
+										player.sendNotification("Protection Created!", "It is now secure.", getDisplayItem(tgui.target.getType()));
+									}
 								}
 							}else {
-								if(createProtection(tgui, player)) {
-									player.sendNotification("Protection Created!", "It is now secure.", getDisplayItem(tgui.target.getType()));
-								}
+								player.sendNotification("Error!", "Please try again.", Material.FIRE);
 							}
-						}else {
-							player.sendNotification("Error!", "Please try again.", Material.FIRE);
-						}
-						player.closeActiveWindow();
-						if(plugin.guiscreens.containsKey(player)) {
-							plugin.guiscreens.remove(player);
-						}
-					}else if (completebutton.equalsIgnoreCase("delete")) {
-						if(plugin.guiscreens.containsKey(player)) {
-							PlayerLwcGUI tgui = plugin.guiscreens.get(player);
-							Protection protection = plugin.lwc.findProtection(tgui.target);
-							if(protection != null) {
-								if(plugin.lwc.canAdminProtection(player, protection) && plugin.lwc.hasPermission(player, "lwc.remove")) {
-									protection.remove();
-									player.sendNotification("Protection Removed!", "Removed successfully.", getDisplayItem(tgui.target.getType()));
-								}
-							}
-						}else {
-							player.sendNotification("Error!", "Please try again.", Material.FIRE);
-						}
-						player.closeActiveWindow();
-						if(plugin.guiscreens.containsKey(player)) {
-							plugin.guiscreens.remove(player);
-						}
-					}else if (completebutton.equalsIgnoreCase("unlock")) {
-						if(plugin.unlockscreens.containsKey(player)) {
-							UnlockGUI tgui = plugin.unlockscreens.get(player);
-							Protection protection = plugin.lwc.findProtection(tgui.target);
-							if(protection != null) {
-								if(unlockProtection(tgui, protection, player)) {
-									player.sendNotification("Access Granted.", tgui.target.getType().toString().replace('_', ' ') + " Unlocked!", getDisplayItem(tgui.target.getType()));
-									player.closeActiveWindow();
-									if(plugin.unlockscreens.containsKey(player)) {
-										plugin.unlockscreens.remove(player);
-									}
-								}else {
-									player.sendNotification("Access Denied", "Please try again.", Material.FIRE);
-								}
-							}
-						}else {
-							player.sendNotification("Error!", "Please try again.", Material.FIRE);
 							player.closeActiveWindow();
-							if(plugin.unlockscreens.containsKey(player)) {
-								plugin.unlockscreens.remove(player);
+							if(plugin.guiscreens.containsKey(player)) {
+								plugin.guiscreens.remove(player);
 							}
+						}else if (completebutton.equalsIgnoreCase("delete")) {
+							if(plugin.guiscreens.containsKey(player)) {
+								PlayerLwcGUI tgui = plugin.guiscreens.get(player);
+								Protection protection = plugin.lwc.findProtection(tgui.target);
+								if(protection != null) {
+									if(plugin.lwc.canAdminProtection(player, protection) && plugin.lwc.hasPermission(player, "lwc.remove")) {
+										protection.remove();
+										player.sendNotification("Protection Removed!", "Removed successfully.", getDisplayItem(tgui.target.getType()));
+									}
+								}
+							}else {
+								player.sendNotification("Error!", "Please try again.", Material.FIRE);
+							}
+							player.closeActiveWindow();
+							if(plugin.guiscreens.containsKey(player)) {
+								plugin.guiscreens.remove(player);
+							}
+						}else if (completebutton.equalsIgnoreCase("unlock")) {
+							if(plugin.unlockscreens.containsKey(player)) {
+								UnlockGUI tgui = plugin.unlockscreens.get(player);
+								Protection protection = plugin.lwc.findProtection(tgui.target);
+								if(protection != null) {
+									if(unlockProtection(tgui, protection, player)) {
+										player.sendNotification("Access Granted.", tgui.target.getType().toString().replace('_', ' ') + " Unlocked!", getDisplayItem(tgui.target.getType()));
+										player.closeActiveWindow();
+										if(plugin.unlockscreens.containsKey(player)) {
+											plugin.unlockscreens.remove(player);
+										}
+									}else {
+										player.sendNotification("Access Denied", "Please try again.", Material.FIRE);
+									}
+								}
+							}else {
+								player.sendNotification("Error!", "Please try again.", Material.FIRE);
+								player.closeActiveWindow();
+								if(plugin.unlockscreens.containsKey(player)) {
+									plugin.unlockscreens.remove(player);
+								}
+							}
+						}
+					}else if (plugin.lwc.hasPermission(player, "lwc.unlock")) {
+						if (completebutton.equalsIgnoreCase("unlock")) {
+							if(plugin.unlockscreens.containsKey(player)) {
+								UnlockGUI tgui = plugin.unlockscreens.get(player);
+								Protection protection = plugin.lwc.findProtection(tgui.target);
+								if(protection != null) {
+									if(unlockProtection(tgui, protection, player)) {
+										player.sendNotification("Access Granted.", tgui.target.getType().toString().replace('_', ' ') + " Unlocked!", getDisplayItem(tgui.target.getType()));player.closeActiveWindow();
+										if(plugin.unlockscreens.containsKey(player)) {
+											plugin.unlockscreens.remove(player);
+										}
+									}else {
+										player.sendNotification("Access Denied", "Please try again.", Material.FIRE);
+									}
+								}
+							}else {
+								player.sendNotification("Error!", "Please try again.", Material.FIRE);
+								player.closeActiveWindow();
+								if(plugin.unlockscreens.containsKey(player)) {
+									plugin.unlockscreens.remove(player);
+								}
+							}
+						}
+					} else {
+						player.sendNotification("Not Authorized!", "Sorry, no protections.", Material.FIRE);
+						player.closeActiveWindow();
+						if(plugin.unlockscreens.containsKey(player)) {
+							plugin.unlockscreens.remove(player);
 						}
 					}
-				}else if (plugin.lwc.hasPermission(player, "lwc.unlock")) {
-					if (completebutton.equalsIgnoreCase("unlock")) {
-						if(plugin.unlockscreens.containsKey(player)) {
-							UnlockGUI tgui = plugin.unlockscreens.get(player);
-							Protection protection = plugin.lwc.findProtection(tgui.target);
-							if(protection != null) {
-								if(unlockProtection(tgui, protection, player)) {
-									player.sendNotification("Access Granted.", tgui.target.getType().toString().replace('_', ' ') + " Unlocked!", getDisplayItem(tgui.target.getType()));player.closeActiveWindow();
-									if(plugin.unlockscreens.containsKey(player)) {
-										plugin.unlockscreens.remove(player);
-									}
-								}else {
-									player.sendNotification("Access Denied", "Please try again.", Material.FIRE);
-								}
-							}
-						}else {
-							player.sendNotification("Error!", "Please try again.", Material.FIRE);
-							player.closeActiveWindow();
-							if(plugin.unlockscreens.containsKey(player)) {
-								plugin.unlockscreens.remove(player);
-							}
-						}
-					}
-				} else {
-					player.sendNotification("Not Authorized!", "Sorry, no protections.", Material.FIRE);
+				}else {
 					player.closeActiveWindow();
+					if(plugin.guiscreens.containsKey(player)) {
+						plugin.guiscreens.remove(player);
+					}
 					if(plugin.unlockscreens.containsKey(player)) {
 						plugin.unlockscreens.remove(player);
 					}
+					player.sendNotification("LWC Not Found", "Please try again.", Material.FIRE);
 				}
 			}
 		}
