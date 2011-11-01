@@ -180,7 +180,6 @@ public class LWCScreenListener extends ScreenListener {
 		int x = tgui.target.getX();
 		int y = tgui.target.getY();
 		int z = tgui.target.getZ();
-		System.out.println("Password set to: " + tgui.password.getText());
 		if(tgui.lwpassword.isSelected()) {
 			type = ProtectionTypes.PASSWORD;
 			if(tgui.password.getText().equals("********") || tgui.password.getText().equals("")) {
