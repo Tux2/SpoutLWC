@@ -55,7 +55,7 @@ public class SpoutLWC extends JavaPlugin {
     	Plugin lwcPlugin = getServer().getPluginManager().getPlugin("LWC");
     	if(lwcPlugin != null) {
     	    lwc = ((LWCPlugin) lwcPlugin).getLWC();
-    	    LWCScreenListener serverListener = new LWCScreenListener(this);
+    	    LWCServerListener serverListener = new LWCServerListener(this);
 
             // Register our events
             PluginManager pm = getServer().getPluginManager();
