@@ -17,7 +17,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.griefcraft.model.AccessRight;
 import com.griefcraft.model.Protection;
-import com.griefcraft.model.ProtectionTypes;
 
 public class PlayerLwcGUI {
 	
@@ -176,12 +175,12 @@ public class PlayerLwcGUI {
 					}
 				}
 			}
-			if(protection.getType() == ProtectionTypes.PASSWORD) {
+			if(protection.getType() == Protection.Type.PASSWORD) {
 				password.setText("********");
 				lwpassword.setSelected(true);
-			}else if(protection.getType() == ProtectionTypes.PRIVATE) {
+			}else if(protection.getType() == Protection.Type.PRIVATE) {
 				lwprivate.setSelected(true);
-			}else if(protection.getType() == ProtectionTypes.PUBLIC) {
+			}else if(protection.getType() == Protection.Type.PUBLIC) {
 				lwpublic.setSelected(true);
 			}
 			admins.setText(sadmins);
