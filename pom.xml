@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>SpoutLWC</groupId>
-	<artifactId>SpoutLWC</artifactId>
+	<groupId>tux2</groupId>
+	<artifactId>spoutlwc</artifactId>
 	<version>0.2a1</version>
 	<packaging>jar</packaging>
 	<name>SpoutLWC</name>
 	<scm>
-		<connection>scm:git:git://github.com/nerdnu/SpoutLWC.git</connection>
-		<url>https://github.com/nerdnu/SpoutLWC</url>
-		<developerConnection>scm:git:git://github.com/nerdnu/SpoutLWC.git</developerConnection>
+		<connection>scm:git:git://github.com/Tux2/SpoutLWC.git</connection>
+		<url>https://github.com/Tux2/SpoutLWC</url>
+		<developerConnection>scm:git:git://github.com/Tux2/SpoutLWC.git</developerConnection>
 	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
