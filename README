@@ -1,0 +1,23 @@
+Ever wanted a nice GUI to manage your LWC protections? Want no more! With complete option support for LWC all you have to do is look at the item you want to lock or edit and press "L". Then just fill in the options in the intuitive GUI interface. Just separate names with a comma: ",".
+
+To unlock your password protected blocks just press "U" for an unlock GUI!
+
+Source Code
+
+Also, a big thanks to Hidendra who answered the questions I had on how a few things worked in LWC.
+
+For those of you that are getting errors in the plugin please download the 0.2 beta build and see if the errors go away.
+
+Features:
+
+A complete spout gui for LWC
+Easy to use
+Spout achievements
+How to use:
+
+Drop in your plugins folder
+To lock or edit a chest just look at it and press "L"
+To unlock a password protection just look at it and press "U"
+
+
+Compiling: Just do a mvn clean install, it should pull all required dependencies.

@@ -9,7 +9,6 @@ import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.griefcraft.model.Protection;
-import com.griefcraft.model.ProtectionTypes;
 
 public class LWCInputListener extends InputListener {
 	
@@ -47,7 +46,7 @@ public class LWCInputListener extends InputListener {
         		Protection protection = plugin.lwc.findProtection(target);
 
         		if(protection != null) {
-        		    if(protection.getType() == ProtectionTypes.PASSWORD) {
+        		    if(protection.getType() == Protection.Type.PASSWORD) {
         		    	plugin.unlockscreens.put(player, new UnlockGUI(plugin, protection, player));
         		    }else {
         		    	player.sendNotification("No Password Here", "You can't unlock this!", Material.FIRE);
