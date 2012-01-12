@@ -8,8 +8,8 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.griefcraft.model.AccessRight;
 import com.griefcraft.model.Protection;
-import com.griefcraft.model.ProtectionTypes;
 import com.griefcraft.util.StringUtils;
+import com.griefcraft.model.LWCPlayer;
 
 public class LWCScreenListener extends ScreenListener {
 
@@ -155,13 +155,16 @@ public class LWCScreenListener extends ScreenListener {
 	}
 	
 	private boolean unlockProtection(UnlockGUI tgui, Protection protection, SpoutPlayer player) {
-		
+//		System.out.println("Password is "+ tgui.password.getText());
 		if(!tgui.password.getText().equals("")) {
 			String password = StringUtils.encrypt(tgui.password.getText());
-			if(protection.getType() == ProtectionTypes.PASSWORD) {
-				if(protection.getData().equals(password)) {
-	                plugin.lwc.getMemoryDatabase().unregisterUnlock(player.getName());
-	                plugin.lwc.getMemoryDatabase().registerPlayer(player.getName(), protection.getId());
+//			System.out.println("Passwordhash is " + password);
+			if(protection.getType() == Protection.Type.PASSWORD) {
+//				System.out.println("Protection type is password");
+				if(protection.getPassword().equals(password)) {
+//					System.out.println("Passwords match");
+//					System.out.println("LWCPlayer is "+ LWCPlayer.getPlayer(player));
+					LWCPlayer.getPlayer(player).addAccessibleProtection(protection);
 	                return true;
 				}
 			}
@@ -173,7 +176,7 @@ public class LWCScreenListener extends ScreenListener {
 	private boolean createProtection(PlayerLwcGUI tgui, SpoutPlayer player) {
 		// vars passed to the function that creates the protection
 		int blockId = tgui.target.getTypeId(); // if this remains 0, it will automatically set itself when first interacted with!
-		int type = 0; // see: http://griefcraft.com/javadoc/lwc/com/griefcraft/model/ProtectionTypes.html
+		Protection.Type type = null; // see: http://griefcraft.com/javadoc/lwc/com/griefcraft/model/ProtectionTypes.html
 		String world = tgui.target.getWorld().getName(); // this isn't essentially REQUIRED like blockId, but if it's empty, it will automatically set itself when first opened
 		String owner = tgui.owner.getText(); // this player will have the ability to remove it !!
 		String password = tgui.password.getText(); // only applies if type = ProtectionTypes.PASSWORD
@@ -181,15 +184,15 @@ public class LWCScreenListener extends ScreenListener {
 		int y = tgui.target.getY();
 		int z = tgui.target.getZ();
 		if(tgui.lwpassword.isSelected()) {
-			type = ProtectionTypes.PASSWORD;
+			type = Protection.Type.PASSWORD;
 			if(tgui.password.getText().equals("********") || tgui.password.getText().equals("")) {
 				player.sendNotification("Invalid Password", "Please input a password!", Material.FIRE);
 				return false;
 			}
 		}else if(tgui.lwprivate.isSelected()) {
-			type = ProtectionTypes.PRIVATE;
+			type = Protection.Type.PRIVATE;
 		}else if(tgui.lwpublic.isSelected()) {
-			type = ProtectionTypes.PUBLIC;
+			type = Protection.Type.PUBLIC;
 		}
 
 		// now create the protection
