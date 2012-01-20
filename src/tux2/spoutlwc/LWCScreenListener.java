@@ -6,9 +6,9 @@ import org.getspout.spoutapi.event.screen.ScreenListener;
 import org.getspout.spoutapi.gui.Button;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.griefcraft.model.AccessRight;
+import com.griefcraft.model.Permission;
 import com.griefcraft.model.Protection;
-import com.griefcraft.util.StringUtils;
+import com.griefcraft.util.StringUtil;
 import com.griefcraft.model.LWCPlayer;
 
 public class LWCScreenListener extends ScreenListener {
@@ -157,7 +157,7 @@ public class LWCScreenListener extends ScreenListener {
 	private boolean unlockProtection(UnlockGUI tgui, Protection protection, SpoutPlayer player) {
 //		System.out.println("Password is "+ tgui.password.getText());
 		if(!tgui.password.getText().equals("")) {
-			String password = StringUtils.encrypt(tgui.password.getText());
+			String password = StringUtil.encrypt(tgui.password.getText());
 //			System.out.println("Passwordhash is " + password);
 			if(protection.getType() == Protection.Type.PASSWORD) {
 //				System.out.println("Protection type is password");
@@ -196,31 +196,31 @@ public class LWCScreenListener extends ScreenListener {
 		}
 
 		// now create the protection
-		Protection tprotection = plugin.lwc.getPhysicalDatabase().registerProtection(blockId, type, world, owner, StringUtils.encrypt(password), x, y, z);
+		Protection tprotection = plugin.lwc.getPhysicalDatabase().registerProtection(blockId, type, world, owner, StringUtil.encrypt(password), x, y, z);
 		
 		//Add all the admins in the list
 		String[] padmins = tgui.admins.getText().split(",");
 		for(String tadmin : padmins) {
 			String[] stadmin = tadmin.trim().split(":");
 			if(stadmin.length > 1) {
-				AccessRight ar = new AccessRight();
+				Permission ar = new Permission();
 				if(stadmin[0].trim().equalsIgnoreCase("g")) {
-					ar.setType(AccessRight.GROUP);
-					ar.setRights(AccessRight.RIGHT_ADMIN);
+					ar.setType(Permission.Type.GROUP);
+					ar.setAccess(Permission.Access.ADMIN);
 					ar.setName(stadmin[1].trim());
-					tprotection.addAccessRight(ar);
+					tprotection.addPermission(ar);
 				}else if(stadmin[0].trim().equalsIgnoreCase("l")) {
-					ar.setType(AccessRight.LIST);
-					ar.setRights(AccessRight.RIGHT_ADMIN);
+					ar.setType(Permission.Type.LIST);
+					ar.setAccess(Permission.Access.ADMIN);
 					ar.setName(stadmin[1].trim());
-					tprotection.addAccessRight(ar);
+					tprotection.addPermission(ar);
 				}
 			}else {
-				AccessRight ar = new AccessRight();
-				ar.setType(AccessRight.PLAYER);
-				ar.setRights(AccessRight.RIGHT_ADMIN);
+				Permission ar = new Permission();
+				ar.setType(Permission.Type.PLAYER);
+				ar.setAccess(Permission.Access.ADMIN);
 				ar.setName(tadmin.trim());
-				tprotection.addAccessRight(ar);
+				tprotection.addPermission(ar);
 			}
 		}
 		
@@ -229,24 +229,24 @@ public class LWCScreenListener extends ScreenListener {
 		for(String tadmin : pusers) {
 			String[] stadmin = tadmin.trim().split(":");
 			if(stadmin.length > 1) {
-				AccessRight ar = new AccessRight();
+				Permission ar = new Permission();
 				if(stadmin[0].trim().equalsIgnoreCase("g")) {
-					ar.setType(AccessRight.GROUP);
-					ar.setRights(AccessRight.RIGHT_PLAYER);
+					ar.setType(Permission.Type.GROUP);
+					ar.setAccess(Permission.Access.PLAYER);
 					ar.setName(stadmin[1].trim());
-					tprotection.addAccessRight(ar);
+					tprotection.addPermission(ar);
 				}else if(stadmin[0].trim().equalsIgnoreCase("l")) {
-					ar.setType(AccessRight.LIST);
-					ar.setRights(AccessRight.RIGHT_PLAYER);
+					ar.setType(Permission.Type.LIST);
+					ar.setAccess(Permission.Access.PLAYER);
 					ar.setName(stadmin[1].trim());
-					tprotection.addAccessRight(ar);
+					tprotection.addPermission(ar);
 				}
 			}else {
-				AccessRight ar = new AccessRight();
-				ar.setType(AccessRight.PLAYER);
-				ar.setRights(AccessRight.RIGHT_PLAYER);
+				Permission ar = new Permission();
+				ar.setType(Permission.Type.PLAYER);
+				ar.setAccess(Permission.Access.PLAYER);
 				ar.setName(tadmin.trim());
-				tprotection.addAccessRight(ar);
+				tprotection.addPermission(ar);
 			}
 		}
 		tprotection.save();
