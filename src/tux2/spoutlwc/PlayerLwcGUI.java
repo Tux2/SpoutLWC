@@ -15,7 +15,7 @@ import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.griefcraft.model.AccessRight;
+import com.griefcraft.model.Permission;
 import com.griefcraft.model.Protection;
 
 public class PlayerLwcGUI {
@@ -131,43 +131,43 @@ public class PlayerLwcGUI {
 			if(!protection.getOwner().equalsIgnoreCase(splayer.getName()) && !plugin.lwc.hasPermission(splayer, "lwc.admin")) {
 				owner.setEnabled(false);
 			}
-			List<AccessRight> rights = protection.getAccessRights();
+			List<Permission> rights = protection.getPermissions();
 			String sadmins = "";
 			String susers = "";
-			for(AccessRight right : rights) {
-				if(right.getType() == AccessRight.PLAYER) {
-					if(right.getRights() == AccessRight.RIGHT_ADMIN) {
+			for(Permission right : rights) {
+				if(right.getType() == Permission.Type.PLAYER) {
+					if(right.getAccess() == Permission.Access.ADMIN) {
 						//right.
 						if(!sadmins.equals("")) {
 							sadmins = sadmins + ", ";
 						}
 						sadmins = sadmins + right.getName();
-					}else if(right.getRights() == AccessRight.RIGHT_PLAYER) {
+					}else if(right.getAccess() == Permission.Access.PLAYER) {
 						if(!susers.equals("")) {
 							susers = susers + ", ";
 						}
 						susers = susers + right.getName();
 					}
-				}else if(right.getType() == AccessRight.GROUP) {
-					if(right.getRights() == AccessRight.RIGHT_ADMIN) {
+				}else if(right.getType() == Permission.Type.GROUP) {
+					if(right.getAccess() == Permission.Access.ADMIN) {
 						if(!sadmins.equals("")) {
 							sadmins = sadmins + ", ";
 						}
 						sadmins = sadmins + "g:" + right.getName();
-					}else if(right.getRights() == AccessRight.RIGHT_PLAYER) {
+					}else if(right.getAccess() == Permission.Access.PLAYER) {
 						if(!susers.equals("")) {
 							susers = susers + ", ";
 						}
 						susers = susers + "g:" + right.getName();
 					}
-				}else if(right.getType() == AccessRight.LIST) {
-					if(right.getRights() == AccessRight.RIGHT_ADMIN) {
+				}else if(right.getType() == Permission.Type.LIST) {
+					if(right.getAccess() == Permission.Access.ADMIN) {
 						//right.
 						if(!sadmins.equals("")) {
 							sadmins = sadmins + ", ";
 						}
 						sadmins = sadmins + "l:" + right.getName();
-					}else if(right.getRights() == AccessRight.RIGHT_PLAYER) {
+					}else if(right.getAccess() == Permission.Access.PLAYER) {
 						if(!susers.equals("")) {
 							susers = susers + ", ";
 						}
