@@ -37,6 +37,13 @@ public class LWCScreenListener implements Listener {
 			} else {
 				if(plugin.lwc != null) {
 					if (plugin.lwc.hasPermission(player, "lwc.protect")) {
+                                                if (completebutton.equalsIgnoreCase("Password Lock") ||
+                                                    completebutton.equalsIgnoreCase("Private Lock") ||
+                                                    completebutton.equalsIgnoreCase("Public Lock"))
+							if(plugin.guiscreens.containsKey(player)) {
+								PlayerLwcGUI tgui = plugin.guiscreens.get(player);
+                                                                tgui.savebutton.setEnabled(true);
+                                                        }
 						if (completebutton.equalsIgnoreCase("save")) {
 							if(plugin.guiscreens.containsKey(player)) {
 								PlayerLwcGUI tgui = plugin.guiscreens.get(player);

@@ -19,6 +19,7 @@ public class PlayerLwcGUI {
 	GenericRadioButton lwpassword = new GenericRadioButton("Password Lock");
 	GenericRadioButton lwprivate = new GenericRadioButton("Private Lock");
 	GenericRadioButton lwpublic = new GenericRadioButton("Public Lock");
+        GenericButton savebutton = new GenericButton("Save");
 	Protection protection;
 	Block target;
 	
@@ -101,7 +102,6 @@ public class PlayerLwcGUI {
 		users.setWidth(340).setHeight(15);
 		users.setMaximumCharacters(500);
 		ppane.attachWidget(plugin, users);
-		GenericButton savebutton = new GenericButton("Save");
 		GenericButton deletebutton = new GenericButton("Delete");
 		GenericButton cancelbutton = new GenericButton("Cancel");
 		//closebutton.setX(160).setY(210);
@@ -181,8 +181,9 @@ public class PlayerLwcGUI {
 			}
 		}else {
 			deletebutton.setEnabled(false);
+                        savebutton.setEnabled(false);
 			owner.setText(splayer.getName());
-//			lwprivate.setSelected(true);
+			lwprivate.setSelected(false);
 		}
 		splayer.getMainScreen().attachPopupScreen(ppane);
 	}

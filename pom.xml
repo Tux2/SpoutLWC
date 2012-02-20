@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tux2</groupId>
 	<artifactId>spoutlwc</artifactId>
-	<version>0.2b1</version>
+	<version>0.2c1</version>
 	<packaging>jar</packaging>
 	<name>SpoutLWC</name>
 	<scm>
