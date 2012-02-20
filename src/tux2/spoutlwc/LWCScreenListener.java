@@ -1,17 +1,17 @@
 package tux2.spoutlwc;
 
-import org.bukkit.Material;
-import org.getspout.spoutapi.event.screen.ButtonClickEvent;
-import org.getspout.spoutapi.event.screen.ScreenListener;
-import org.getspout.spoutapi.gui.Button;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
+import com.griefcraft.model.LWCPlayer;
 import com.griefcraft.model.Permission;
 import com.griefcraft.model.Protection;
 import com.griefcraft.util.StringUtil;
-import com.griefcraft.model.LWCPlayer;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.getspout.spoutapi.event.screen.ButtonClickEvent;
+import org.getspout.spoutapi.gui.Button;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class LWCScreenListener extends ScreenListener {
+public class LWCScreenListener implements Listener {
 
 	SpoutLWC plugin;
 
@@ -19,7 +19,7 @@ public class LWCScreenListener extends ScreenListener {
 		this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onButtonClick(ButtonClickEvent event) {
 		// See if we are the owners of this button...
 		if (plugin == event.getButton().getPlugin()) {

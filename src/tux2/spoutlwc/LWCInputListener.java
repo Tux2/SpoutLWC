@@ -1,16 +1,16 @@
 package tux2.spoutlwc;
 
+import com.griefcraft.model.Protection;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.getspout.spoutapi.event.input.InputListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.griefcraft.model.Protection;
-
-public class LWCInputListener extends InputListener {
+public class LWCInputListener implements Listener {
 	
 	SpoutLWC plugin;
 	public LWCInputListener(SpoutLWC plugin) {
@@ -18,7 +18,7 @@ public class LWCInputListener extends InputListener {
 		this.plugin = plugin;
 	}
 
-    @Override
+    @EventHandler
     public void onKeyReleasedEvent(KeyReleasedEvent event) {
     	if(plugin.lwc != null) {
         	if(event.getPlayer().isSpoutCraftEnabled() && plugin.lwc.hasPermission(event.getPlayer(), "lwc.protect") && event.getKey() == Keyboard.KEY_L && event.getScreenType() == ScreenType.GAME_SCREEN) {

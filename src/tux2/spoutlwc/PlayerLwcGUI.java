@@ -1,22 +1,13 @@
 package tux2.spoutlwc;
 
+import com.griefcraft.model.Permission;
+import com.griefcraft.model.Protection;
 import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.gui.Color;
-import org.getspout.spoutapi.gui.GenericButton;
-import org.getspout.spoutapi.gui.GenericItemWidget;
-import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.gui.GenericRadioButton;
-import org.getspout.spoutapi.gui.GenericTextField;
-import org.getspout.spoutapi.gui.WidgetAnchor;
+import org.getspout.spoutapi.gui.*;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import com.griefcraft.model.Permission;
-import com.griefcraft.model.Protection;
 
 public class PlayerLwcGUI {
 	
@@ -191,7 +182,7 @@ public class PlayerLwcGUI {
 		}else {
 			deletebutton.setEnabled(false);
 			owner.setText(splayer.getName());
-			lwprivate.setSelected(true);
+//			lwprivate.setSelected(true);
 		}
 		splayer.getMainScreen().attachPopupScreen(ppane);
 	}

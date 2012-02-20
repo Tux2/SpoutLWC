@@ -1,20 +1,17 @@
 package tux2.spoutlwc;
 
-import java.util.HashSet;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event.Type;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.PluginManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
-import com.griefcraft.lwc.*;
+import com.griefcraft.lwc.LWC;
+import com.griefcraft.lwc.LWCPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
+import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
  * spoutlwc for Bukkit
@@ -50,6 +47,7 @@ public class SpoutLWC extends JavaPlugin {
 
    
 
+    @Override
     public void onEnable() {
     	setupPermissions();
     	Plugin lwcPlugin = getServer().getPluginManager().getPlugin("LWC");
@@ -59,10 +57,9 @@ public class SpoutLWC extends JavaPlugin {
 
             // Register our events
             PluginManager pm = getServer().getPluginManager();
-            pm.registerEvent(Type.CUSTOM_EVENT, new LWCScreenListener(this), Priority.Normal, this);
-            pm.registerEvent(Type.CUSTOM_EVENT, new LWCInputListener(this), Priority.Normal, this);
-            pm.registerEvent(Type.PLUGIN_ENABLE, serverListener, Priority.Monitor, this);
-            pm.registerEvent(Type.PLUGIN_DISABLE, serverListener, Priority.Monitor, this);
+            pm.registerEvents(new LWCScreenListener(this), this);
+            pm.registerEvents(new LWCInputListener(this), this);
+            pm.registerEvents(serverListener, this);
            
 
             // EXAMPLE: Custom code, here we just output some info so we can check all is well
@@ -73,6 +70,7 @@ public class SpoutLWC extends JavaPlugin {
     	}
     }
     
+    @Override
     public void onDisable() {
         // NOTE: All registered events are automatically unregistered when a plugin is disabled
 
