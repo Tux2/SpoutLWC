@@ -27,6 +27,7 @@ public class UnlockGUI {
 		GenericPopup ppane = new GenericPopup();
 		//Add the label at the top of the window
 		GenericLabel label = new GenericLabel("LWC Password Unlock");
+                label.setHeight(20).setWidth(220);
 		label.setTextColor(new Color(0, 200, 0)); //This makes the label green.
 		label.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER); //This puts the label at top center and align the text correctly.
 		label.shiftYPos(5);
@@ -42,6 +43,7 @@ public class UnlockGUI {
 		chesticon.setTooltip("Unlock that " + target.getType().toString().replace('_', ' ') + "!");
 		ppane.attachWidget(plugin, chesticon);
 		GenericLabel lpassword = new GenericLabel("Enter Password:");
+                lpassword.setHeight(20).setWidth(170);
 		lpassword.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.CENTER_CENTER);
 		ppane.attachWidget(plugin, lpassword);
 		password.setWidth(80).setHeight(15);

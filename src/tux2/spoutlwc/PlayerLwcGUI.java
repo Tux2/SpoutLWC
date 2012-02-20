@@ -34,6 +34,7 @@ public class PlayerLwcGUI {
 		GenericPopup ppane = new GenericPopup();
 		//Add the label at the top of the window
 		GenericLabel label = new GenericLabel("LWC Locking System");
+                label.setHeight(20).setWidth(200);
 		label.setTextColor(new Color(0, 200, 0)); //This makes the label green.
 		label.setAlign(WidgetAnchor.TOP_CENTER).setAnchor(WidgetAnchor.TOP_CENTER); //This puts the label at top center and align the text correctly.
 		label.shiftYPos(5);
@@ -53,9 +54,9 @@ public class PlayerLwcGUI {
 		
 		//Create the owner label
 		GenericLabel olabel = new GenericLabel("Owner:");
-		//Set it's position on the screen (in pixels)
+		//Set its position on the screen (in pixels)
 		olabel.setX(50).setY(100);
-		//set it's position
+		//set its position
 		olabel.setHeight(20);
 		//add the label to the popup
 		ppane.attachWidget(plugin, olabel);
