@@ -3,25 +3,28 @@ package tux2.spoutlwc;
 import com.griefcraft.model.Protection;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.getspout.spoutapi.event.input.KeyReleasedEvent;
+import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.gui.ScreenType;
-import org.getspout.spoutapi.keyboard.Keyboard;
+import org.getspout.spoutapi.keyboard.BindingExecutionDelegate;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class LWCInputListener implements Listener {
+public class LWCKeyHandler implements BindingExecutionDelegate {
 	
 	SpoutLWC plugin;
-	public LWCInputListener(SpoutLWC plugin) {
-		super();
+        boolean lock;
+	public LWCKeyHandler(SpoutLWC plugin, boolean lock) {
 		this.plugin = plugin;
+                this.lock = lock;
 	}
+        
+    @Override
+    public void keyPressed(KeyBindingEvent event) {
+    }
 
-    @EventHandler
-    public void onKeyReleasedEvent(KeyReleasedEvent event) {
+    @Override
+    public void keyReleased(KeyBindingEvent event) {
     	if(plugin.lwc != null) {
-        	if(event.getPlayer().isSpoutCraftEnabled() && plugin.lwc.hasPermission(event.getPlayer(), "lwc.protect") && event.getKey() == Keyboard.KEY_L && event.getScreenType() == ScreenType.GAME_SCREEN) {
+        	if(event.getPlayer().isSpoutCraftEnabled() && plugin.lwc.hasPermission(event.getPlayer(), "lwc.protect") && this.lock && event.getScreenType() == ScreenType.GAME_SCREEN) {
         		SpoutPlayer player = event.getPlayer();
         		Block target = player.getTargetBlock(plugin.transparentBlocks, 40);
         		Protection protection = plugin.lwc.findProtection(target);
@@ -40,7 +43,7 @@ public class LWCInputListener implements Listener {
         				player.sendNotification("Invalid Block", "You can't lock that!", Material.FIRE);
         			}
         		}
-        	}else if(event.getPlayer().isSpoutCraftEnabled() && plugin.lwc.hasPermission(event.getPlayer(), "lwc.unlock") && event.getKey() == Keyboard.KEY_U && event.getScreenType() == ScreenType.GAME_SCREEN) {
+        	}else if(event.getPlayer().isSpoutCraftEnabled() && plugin.lwc.hasPermission(event.getPlayer(), "lwc.unlock") && !this.lock && event.getScreenType() == ScreenType.GAME_SCREEN) {
         		SpoutPlayer player = event.getPlayer();
         		Block target = player.getTargetBlock(plugin.transparentBlocks, 40);
         		Protection protection = plugin.lwc.findProtection(target);

@@ -11,6 +11,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.keyboard.KeyBindingManager;
+import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
@@ -57,10 +60,11 @@ public class SpoutLWC extends JavaPlugin {
 
             // Register our events
             PluginManager pm = getServer().getPluginManager();
-            pm.registerEvents(new LWCScreenListener(this), this);
-            pm.registerEvents(new LWCInputListener(this), this);
             pm.registerEvents(serverListener, this);
-           
+            
+            KeyBindingManager kbm = SpoutManager.getKeyBindingManager();
+            kbm.registerBinding("SpoutLWC.lock", Keyboard.KEY_L, "The key to lock chests", new LWCKeyHandler(this, true), this);
+            kbm.registerBinding("SpoutLWC.unlock", Keyboard.KEY_U, "The key to unlock passworded chests", new LWCKeyHandler(this, false), this);
 
             // EXAMPLE: Custom code, here we just output some info so we can check all is well
             PluginDescriptionFile pdfFile = this.getDescription();

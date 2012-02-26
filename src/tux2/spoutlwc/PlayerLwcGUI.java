@@ -16,10 +16,10 @@ public class PlayerLwcGUI {
 	GenericTextField admins = new GenericTextField();
 	GenericTextField users = new GenericTextField();
 	GenericTextField password = new GenericTextField();
-	GenericRadioButton lwpassword = new GenericRadioButton("Password Lock");
-	GenericRadioButton lwprivate = new GenericRadioButton("Private Lock");
-	GenericRadioButton lwpublic = new GenericRadioButton("Public Lock");
-        GenericButton savebutton = new GenericButton("Save");
+	GenericRadioButton lwpassword;
+	GenericRadioButton lwprivate;
+	GenericRadioButton lwpublic;
+        LWCButton savebutton; 
 	Protection protection;
 	Block target;
 	
@@ -46,7 +46,7 @@ public class PlayerLwcGUI {
 		if(target.getType() == Material.CHEST || target.getType() == Material.FURNACE || target.getType() == Material.BURNING_FURNACE) {
 			y = 50;
 		}
-		GenericItemWidget chesticon = new GenericItemWidget(new ItemStack(LWCScreenListener.getDisplayItem(target.getType())));
+		GenericItemWidget chesticon = new GenericItemWidget(new ItemStack(LWCButton.getDisplayItem(target.getType())));
 		chesticon.setX(x + 2 * height).setY(y);
 		chesticon.setHeight(height * 2).setWidth(height * 2).setDepth(30);
 		chesticon.setTooltip("Lock that chest!");
@@ -72,16 +72,19 @@ public class PlayerLwcGUI {
 		password.setX(275).setY(95);
 		password.setWidth(80).setHeight(15);
 		ppane.attachWidget(plugin, password);
+                lwpassword = new LWCRadioButton("Password Lock", plugin);
 		lwpassword.setX(50).setY(115);
 		lwpassword.setWidth(80).setHeight(20);
 		lwpassword.setGroup(1);
 		lwpassword.setColor(new Color(0, 200, 0));
 		ppane.attachWidget(plugin, lwpassword);
+                lwprivate = new LWCRadioButton("Private Lock", plugin);
 		lwprivate.setX(180).setY(115);
 		lwprivate.setWidth(80).setHeight(20);
 		lwprivate.setGroup(1);
 		lwprivate.setColor(new Color(0, 200, 0));
 		ppane.attachWidget(plugin, lwprivate);
+                lwpublic = new LWCRadioButton("Public Lock", plugin);
 		lwpublic.setX(300).setY(115);
 		lwpublic.setWidth(80).setHeight(20);
 		lwpublic.setGroup(1);
@@ -103,9 +106,10 @@ public class PlayerLwcGUI {
 		users.setWidth(340).setHeight(15);
 		users.setMaximumCharacters(500);
 		ppane.attachWidget(plugin, users);
-		GenericButton deletebutton = new GenericButton("Delete");
-		GenericButton cancelbutton = new GenericButton("Cancel");
+		LWCButton deletebutton = new LWCButton("Delete", plugin);
+		LWCButton cancelbutton = new LWCButton("Cancel", plugin);
 		//closebutton.setX(160).setY(210);
+                savebutton = new LWCButton("Save", plugin);
 		savebutton.setWidth(80).setHeight(20);
 		savebutton.setX(84).setY(200);
 		savebutton.setColor(new Color(0, 150, 0));
