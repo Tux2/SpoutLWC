@@ -1,13 +1,14 @@
 package tux2.spoutlwc;
 
+import com.griefcraft.lwc.LWCPlugin;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.event.server.ServerListener;
 import org.bukkit.plugin.Plugin;
 
-import com.griefcraft.lwc.LWCPlugin;
-
-public class LWCServerListener extends ServerListener {
+public class LWCServerListener implements Listener {
 	
 	SpoutLWC plugin;
 	
@@ -15,7 +16,7 @@ public class LWCServerListener extends ServerListener {
         this.plugin = plugin;
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisable(PluginDisableEvent event) {
         if (plugin.lwc != null) {
             if (event.getPlugin().getDescription().getName().equals("LWC")) {
@@ -25,7 +26,7 @@ public class LWCServerListener extends ServerListener {
         }
     }
 
-    @Override
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnable(PluginEnableEvent event) {
         if (plugin.lwc == null) {
             Plugin lwcPlugin = plugin.getServer().getPluginManager().getPlugin("LWC");
